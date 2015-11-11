@@ -1,0 +1,4 @@
+ec2_keypair_name = "keyname"
+cluster_name = "phxjug"
+node_count = 3
+ecs_instance_type = "t2.medium"
