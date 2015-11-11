@@ -185,10 +185,27 @@ resource "aws_autoscaling_group" "ecs_nodes" {
 # ECS TASK DEFINITION FAMILY + ECS SERVICE
 # ------------------------------------------------------------------------------
 
-# Create a Task Definition Family
+/*# Create a Task Definition Family
+# - Actually, we're creating a single Task Definition, but this has the effect
+#   of also creating a Task Definition Family
 # - Choose an arbitrary initial docker image tag (version) since our deployment
 #   process will replace these
 resource "aws_ecs_task_definition" "demo_service" {
   family = "demo-service"
   container_definitions = "${file("files/ecs-task-definition.json")}"
 }
+
+# Create an ECS Service
+resource "aws_ecs_service" "demo_service" {
+  name = "demo-service"
+  cluster = "default"
+  task_definition = "${aws_ecs_task_definition.demo_service.arn}"
+  desired_count = 2
+  iam_role = "${aws_iam_role.ecs_node.arn}"
+
+  load_balancer {
+    elb_name = "${aws_elb.demo_service.id}"
+    container_name = "phxjug-play-framework-demo"
+    container_port = 9001
+  }
+}*/
