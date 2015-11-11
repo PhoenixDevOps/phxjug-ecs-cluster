@@ -180,3 +180,15 @@ resource "aws_autoscaling_group" "ecs_nodes" {
   launch_configuration = "${aws_launch_configuration.ecs_node.name}"
   load_balancers = ["${aws_elb.demo_service.name}"]
 }
+
+# ------------------------------------------------------------------------------
+# ECS TASK DEFINITION FAMILY + ECS SERVICE
+# ------------------------------------------------------------------------------
+
+# Create a Task Definition Family
+# - Choose an arbitrary initial docker image tag (version) since our deployment
+#   process will replace these
+resource "aws_ecs_task_definition" "demo_service" {
+  family = "demo-service"
+  container_definitions = "${file("files/ecs-task-definition.json")}"
+}
