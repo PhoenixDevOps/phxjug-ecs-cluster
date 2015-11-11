@@ -129,6 +129,14 @@ resource "aws_security_group" "ecs_node" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  # Inbound Container Port
+  ingress {
+    from_port = 9001
+    to_port = 9001
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 # ------------------------------------------------------------------------------
@@ -150,7 +158,7 @@ resource "aws_elb" "demo_service" {
     unhealthy_threshold = 2
     timeout = 3
     interval = 30
-    target = "HTTP:80/health/"
+    target = "HTTP:9001/health"
   }
 
   listener {
